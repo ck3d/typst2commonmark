@@ -91,6 +91,19 @@
 /// Recursively walk a content tree, producing a CommonMark string.
 /// The returned string has no leading/trailing whitespace.
 #let walk(elem, ctx) = {
+  /// Render an emph/strong body with marker alternation by nesting depth.
+  /// Outer level uses `outer-marker`, nested levels use `inner-marker`.
+  let render-emph(body, outer-marker, inner-marker) = {
+    let inner-body = walk(body, _ctx-set(ctx, "emph-depth", ctx.emph-depth + 1))
+    if inner-body == "" {
+      ""
+    } else if ctx.emph-depth == 0 {
+      outer-marker + inner-body + outer-marker
+    } else {
+      inner-marker + inner-body + inner-marker
+    }
+  }
+
   /// Render a sequence of (marker, item-child) pairs as a Markdown list.
   let render-list-elems = (numbered) => {
     let indent = ctx.list-indent
@@ -168,10 +181,8 @@
         let item-buf = ()
 
         // Render a buffer of items as a bullet list
-        let render-items = (items) => {
-          let bulleted = ()
-          for child in items { bulleted.push(("-", child)) }
-          render-list-elems(bulleted)
+        let render-items(items) = {
+          render-list-elems(items.map(i => ("-", i)))
         }
 
         for child in elem.children {
@@ -260,26 +271,12 @@
 
     // ── Strong ──
     else if fn == strong {
-      let body = walk(elem.body, _ctx-set(ctx, "emph-depth", ctx.emph-depth + 1))
-      if body == "" {
-        ""
-      } else if ctx.emph-depth == 0 {
-        "**" + body + "**"
-      } else {
-        "__" + body + "__"
-      }
+      render-emph(elem.body, "**", "__")
     }
 
     // ── Emphasis ──
     else if fn == emph {
-      let body = walk(elem.body, _ctx-set(ctx, "emph-depth", ctx.emph-depth + 1))
-      if body == "" {
-        ""
-      } else if ctx.emph-depth == 0 {
-        "*" + body + "*"
-      } else {
-        "_" + body + "_"
-      }
+      render-emph(elem.body, "*", "_")
     }
 
     // ── Raw / Code ──

@@ -35,7 +35,6 @@ stdenv.mkDerivation (finalAttrs: {
   nativeBuildInputs = [
     typst
     jq
-    bashNonInteractive
   ];
 
   doCheck = true;
@@ -47,7 +46,7 @@ stdenv.mkDerivation (finalAttrs: {
       }
       ''
         typst_toml=$(find ${finalAttrs.finalPackage} -name typst.toml -printf "%h")
-        typst-package-check check "$typst_toml"
+        typst-package-check check --offline "$typst_toml"
         touch $out
       '';
 })

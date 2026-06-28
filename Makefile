@@ -8,7 +8,7 @@ PKG_DIR = $(out)/share/typst/packages/preview/$(NAME)/$(VERSION)
 all:
 
 check:
-	tests/run-tests.sh
+	bash tests/run-tests.sh
 
 install:
 	mkdir -p "$(PKG_DIR)"

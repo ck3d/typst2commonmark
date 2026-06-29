@@ -3,7 +3,6 @@
   stdenv,
   typst,
   jq,
-  bashNonInteractive,
   runCommand,
   typst-package-check,
 }:

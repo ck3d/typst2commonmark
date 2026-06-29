@@ -1,4 +1,4 @@
-# to-commonmark
+# inv-cmarker
 
 Convert [Typst](https://typst.app) content to [CommonMark](https://commonmark.org/) strings.
 
@@ -7,7 +7,7 @@ Written entirely in Typst script — no external tooling required.
 ## Usage
 
 ```typst
-#import "@preview/to-commonmark:0.1.0": to-commonmark
+#import "@preview/inv-cmarker:0.1.0": to-commonmark
 
 #let doc = [
 = Introduction

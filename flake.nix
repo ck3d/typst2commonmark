@@ -1,5 +1,5 @@
 {
-  description = "to-commonmark: Convert content to CommonMark strings";
+  description = "Convert Typst content to CommonMark";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
